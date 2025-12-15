@@ -1,10 +1,9 @@
-// main.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'features/home/presentation/views/home_screen.dart';
 
 void main() {
-  // Riverpod을 사용하려면 앱 전체를 ProviderScope으로 감싸야 해
+  // ProviderScope로 감싸야 Riverpod이 동작합니다.
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -13,16 +12,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Lab',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      // 나중에 GoRouter를 사용할 때 이 부분을 RouterWidget으로 교체할 거야
-      home: Container(
-        color: Colors.white,
-      ), // 임시로 Placeholder를 넣어둘게
+    return const MaterialApp(
+      home: HomeScreen(),
     );
   }
 }
