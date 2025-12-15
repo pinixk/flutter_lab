@@ -32,8 +32,8 @@ dependencies:
     sdk: flutter
 
   # 상태 관리 (Riverpod 2.0 + Generator)
-  flutter_riverpod: ^2.5.1
-  riverpod_annotation: ^2.3.5
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
 
   # 네트워크 통신
   dio: ^5.4.3  # 강력한 HTTP 클라이언트
@@ -57,10 +57,12 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
   # 코드 자동 생성기
-  build_runner: ^2.4.9
-  riverpod_generator: ^2.4.2
+  build_runner: ^2.5.4
+  riverpod_generator: ^2.6.4
   freezed: ^2.5.2
   json_serializable: ^6.8.0
+  custom_lint: ^0.7.3
+  riverpod_lint: ^2.6.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
