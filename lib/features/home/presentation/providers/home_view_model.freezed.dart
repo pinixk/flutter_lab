@@ -17,8 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$HomeState {
   String get message => throw _privateConstructorUsedError; // 메시지 상태 (기본값 설정)
-  UserModel get user => throw _privateConstructorUsedError; // 유저 상태
-  bool get isLoading => throw _privateConstructorUsedError;
+  UserModel get user => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -30,7 +29,7 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({String message, UserModel user, bool isLoading});
+  $Res call({String message, UserModel user});
 
   $UserModelCopyWith<$Res> get user;
 }
@@ -50,7 +49,6 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   $Res call({
     Object? message = null,
     Object? user = null,
-    Object? isLoading = null,
   }) {
     return _then(_value.copyWith(
       message: null == message
@@ -61,10 +59,6 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as UserModel,
-      isLoading: null == isLoading
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 
@@ -85,7 +79,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String message, UserModel user, bool isLoading});
+  $Res call({String message, UserModel user});
 
   @override
   $UserModelCopyWith<$Res> get user;
@@ -104,7 +98,6 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
     Object? user = null,
-    Object? isLoading = null,
   }) {
     return _then(_$HomeStateImpl(
       message: null == message
@@ -115,10 +108,6 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as UserModel,
-      isLoading: null == isLoading
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -127,9 +116,8 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 
 class _$HomeStateImpl implements _HomeState {
   const _$HomeStateImpl(
-      {this.message = '버튼을 눌러보세요',
-      this.user = const UserModel(name: '김코딩', age: 25),
-      this.isLoading = false});
+      {this.message = '데이터 불러오는 중...',
+      this.user = const UserModel(name: '김코딩', age: 25)});
 
   @override
   @JsonKey()
@@ -138,14 +126,10 @@ class _$HomeStateImpl implements _HomeState {
   @override
   @JsonKey()
   final UserModel user;
-// 유저 상태
-  @override
-  @JsonKey()
-  final bool isLoading;
 
   @override
   String toString() {
-    return 'HomeState(message: $message, user: $user, isLoading: $isLoading)';
+    return 'HomeState(message: $message, user: $user)';
   }
 
   @override
@@ -154,13 +138,11 @@ class _$HomeStateImpl implements _HomeState {
         (other.runtimeType == runtimeType &&
             other is _$HomeStateImpl &&
             (identical(other.message, message) || other.message == message) &&
-            (identical(other.user, user) || other.user == user) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+            (identical(other.user, user) || other.user == user));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message, user, isLoading);
+  int get hashCode => Object.hash(runtimeType, message, user);
 
   @JsonKey(ignore: true)
   @override
@@ -170,17 +152,13 @@ class _$HomeStateImpl implements _HomeState {
 }
 
 abstract class _HomeState implements HomeState {
-  const factory _HomeState(
-      {final String message,
-      final UserModel user,
-      final bool isLoading}) = _$HomeStateImpl;
+  const factory _HomeState({final String message, final UserModel user}) =
+      _$HomeStateImpl;
 
   @override
   String get message;
   @override // 메시지 상태 (기본값 설정)
   UserModel get user;
-  @override // 유저 상태
-  bool get isLoading;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>

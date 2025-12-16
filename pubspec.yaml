@@ -16,7 +16,7 @@ dependencies:
   riverpod_annotation: ^2.6.1
 
   # 네트워크 통신
-  dio: ^5.4.3  # 강력한 HTTP 클라이언트
+  dio: ^5.9.0  # 강력한 HTTP 클라이언트
 
   # 라우팅
   go_router: ^14.0.0 # 최신 라우팅 솔루션

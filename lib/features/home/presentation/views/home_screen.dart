@@ -2,64 +2,58 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/home_view_model.dart';
 
-// ConsumerWidget을 상속받아야 ref를 사용할 수 있습니다.
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // 1. ViewModel의 상태(state)를 구독합니다. (값이 바뀌면 자동 리빌드)
-    final state = ref.watch(homeViewModelProvider);
-
-    // 2. 상자 안에서 필요한 것들을 꺼냅니다.
-    final message = state.message;
-    final user = state.user;
+    // 1. 이제 viewModel은 AsyncValue<HomeState> 타입입니다.
+    final asyncState = ref.watch(homeViewModelProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('통합 상태 관리')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // 메시지(String) 보여주기
-            Text(
-              message,
-              style: const TextStyle(fontSize: 20, color: Colors.blue),
+      appBar: AppBar(title: const Text('API 통신 & 비동기 처리')),
+      // 2. [핵심] .when을 사용하여 3가지 상태를 우아하게 처리합니다.
+      body: asyncState.when(
+        // (1) 데이터가 성공적으로 로드되었을 때
+        data: (state) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(state.message, style: const TextStyle(color: Colors.blue)),
+                const SizedBox(height: 20),
+                Text('이름: ${state.user.name}', style: const TextStyle(fontSize: 24)),
+                Text('주소: ${state.user.address}', style: const TextStyle(fontSize: 24)),
+                Text('나이: ${state.user.age}', style: const TextStyle(fontSize: 24)),
+              ],
             ),
-            const Divider(height: 40, thickness: 2), // 구분선
-
-            // 유저 정보(UserModel) 보여주기
-            Text('이름: ${user.name}', style: const TextStyle(fontSize: 24)),
-            Text('나이: ${user.age}', style: const TextStyle(fontSize: 24)),
-          ],
+          );
+        },
+        // (2) 에러가 발생했을 때
+        error: (err, stack) => Center(
+          child: Text('에러 발생: $err', style: const TextStyle(color: Colors.red)),
+        ),
+        // (3) 로딩 중일 때 (초기 로딩 or state = AsyncValue.loading() 일 때)
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
         ),
       ),
+
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          // 메시지 토글 버튼
           FloatingActionButton.extended(
-            heroTag: 'msg',
-            onPressed: () => ref.read(homeViewModelProvider.notifier).toggleMessage(),
-            label: const Text('메시지 변경'),
-            icon: const Icon(Icons.message),
-          ),
-          const SizedBox(height: 10),
-
-          // 이름 변경 버튼
-          FloatingActionButton.extended(
-            heroTag: 'name',
+            heroTag: 'update',
+            // 데이터가 있을 때만 버튼 동작
             onPressed: () => ref.read(homeViewModelProvider.notifier).updateName(),
-            label: const Text('이름 변경'),
-            icon: const Icon(Icons.person),
+            label: const Text('이름 변경 (서버 흉내)'),
+            icon: const Icon(Icons.edit),
           ),
           const SizedBox(height: 10),
-
-          // 나이 증가 버튼
           FloatingActionButton.extended(
             heroTag: 'age',
             onPressed: () => ref.read(homeViewModelProvider.notifier).incrementAge(),
-            label: const Text('나이 +1'),
+            label: const Text('나이 +1 (즉시)'),
             icon: const Icon(Icons.add),
           ),
         ],
