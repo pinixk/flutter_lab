@@ -24,6 +24,7 @@ dependencies:
   # 데이터 모델링 (Freezed: DDD의 Entity와 DTO를 깔끔하게 만들어 줌)
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
+  logger: ^2.6.2
 
 dev_dependencies:
   flutter_test:

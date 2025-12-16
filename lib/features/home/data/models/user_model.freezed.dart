@@ -20,8 +20,12 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
-  String get name => throw _privateConstructorUsedError;
-  int get age => throw _privateConstructorUsedError;
+  String get name =>
+      throw _privateConstructorUsedError; // [Refactor 1] API에 age가 없으면 자동으로 25(또는 0)를 넣음
+  int get age =>
+      throw _privateConstructorUsedError; // [Refactor 2] API의 "address" -> "city" 값을 내 "address" 필드에 매핑
+// readValue 기능을 쓰면 복잡한 JSON도 한방에 처리 가능!
+  @JsonKey(readValue: _extractCityFromAddress)
   String get address => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +39,10 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({String name, int age, String address});
+  $Res call(
+      {String name,
+      int age,
+      @JsonKey(readValue: _extractCityFromAddress) String address});
 }
 
 /// @nodoc
@@ -80,7 +87,10 @@ abstract class _$$UserModelImplCopyWith<$Res>
       __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, int age, String address});
+  $Res call(
+      {String name,
+      int age,
+      @JsonKey(readValue: _extractCityFromAddress) String address});
 }
 
 /// @nodoc
@@ -119,17 +129,23 @@ class __$$UserModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserModelImpl implements _UserModel {
   const _$UserModelImpl(
-      {required this.name, required this.age, this.address = '서울'});
+      {required this.name,
+      this.age = 25,
+      @JsonKey(readValue: _extractCityFromAddress) this.address = '서울'});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
 
   @override
   final String name;
-  @override
-  final int age;
+// [Refactor 1] API에 age가 없으면 자동으로 25(또는 0)를 넣음
   @override
   @JsonKey()
+  final int age;
+// [Refactor 2] API의 "address" -> "city" 값을 내 "address" 필드에 매핑
+// readValue 기능을 쓰면 복잡한 JSON도 한방에 처리 가능!
+  @override
+  @JsonKey(readValue: _extractCityFromAddress)
   final String address;
 
   @override
@@ -167,18 +183,21 @@ class _$UserModelImpl implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-      {required final String name,
-      required final int age,
-      final String address}) = _$UserModelImpl;
+          {required final String name,
+          final int age,
+          @JsonKey(readValue: _extractCityFromAddress) final String address}) =
+      _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
 
   @override
   String get name;
-  @override
+  @override // [Refactor 1] API에 age가 없으면 자동으로 25(또는 0)를 넣음
   int get age;
-  @override
+  @override // [Refactor 2] API의 "address" -> "city" 값을 내 "address" 필드에 매핑
+// readValue 기능을 쓰면 복잡한 JSON도 한방에 처리 가능!
+  @JsonKey(readValue: _extractCityFromAddress)
   String get address;
   @override
   @JsonKey(ignore: true)

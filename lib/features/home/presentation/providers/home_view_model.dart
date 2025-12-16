@@ -20,37 +20,12 @@ class HomeViewModel extends _$HomeViewModel {
   // 초기 상태(build) 정의
   @override
   Future<HomeState> build() async {
-    return  HomeState(
+    return const HomeState(
       message: '서버 데이터 로드 완료!',
       user: UserModel(name: '김아무개', age: 25),
     );
   }
 
-  // --- 기능 1: 메시지 토글 (String 제어) ---
-  // 2. 함수 이름을 fetchMessage -> toggleMessage로 변경 (의미를 명확하게)
-  void toggleMessage() async {
-    final currentState = state.value;
-    if(currentState == null) return;
-
-    final repository = ref.read(homeRepositoryProvider);
-
-    final fetchedMessage = repository.fetchWelcomeMessage();
-    const defaultMsg = '버튼을 눌러보세요';
-
-    // [핵심 로직] 현재 상태가 '가져온 데이터'와 같다면? -> 초기화
-    // 그게 아니라면? -> 데이터 가져오기
-    if (currentState.message == fetchedMessage) {
-      state = AsyncValue.data(
-        currentState.copyWith(message: defaultMsg) // 디폴트로 변경
-      );
-    } else {
-      state =AsyncValue.data(
-        currentState.copyWith(message: fetchedMessage)
-      );
-    }
-  }
-
-  // --- 기능 2: 유저 정보 수정 (UserModel 제어) ---
   void updateName() async {
     final currentState = state.value;
     if(currentState == null) return;
