@@ -19,7 +19,7 @@ dependencies:
   dio: ^5.9.0  # 강력한 HTTP 클라이언트
 
   # 라우팅
-  go_router: ^14.0.0 # 최신 라우팅 솔루션
+  go_router: ^17.0.1 # 최신 라우팅 솔루션
 
   # 데이터 모델링 (Freezed: DDD의 Entity와 DTO를 깔끔하게 만들어 줌)
   freezed_annotation: ^2.4.1
