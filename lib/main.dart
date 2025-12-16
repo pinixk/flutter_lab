@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/router/router_provider.dart';
-import 'features/home/presentation/views/home_screen.dart';
 
 void main() {
   // ProviderScope로 감싸야 Riverpod이 동작합니다.

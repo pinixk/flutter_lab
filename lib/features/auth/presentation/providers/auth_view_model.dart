@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/repositories/auth_repository.dart';
 
@@ -32,7 +31,7 @@ class AuthViewModel extends _$AuthViewModel {
 
   // 3. 로그인 동작
   Future<void> login({required String email, required String password}) async {
-    state = AsyncValue.loading();
+    state = const AsyncValue.loading();
 
     state = await AsyncValue.guard(() async {
       final repository = ref.read(authRepositoryProvider);
