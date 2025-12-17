@@ -8,6 +8,7 @@ import '../../features/auth/presentation/views/splash_screen.dart';
 import '../../features/home/presentation/views/home_screen.dart';
 import '../../features/home/presentation/views/detail_screen.dart';
 import '../../features/home/presentation/views/post_list_screen.dart';
+import '../error/not_found_screen.dart';
 import '../layout/main_layout.dart';
 
 part 'router_provider.g.dart';
@@ -59,6 +60,18 @@ GoRouter router(RouterRef ref) {
 
       // 아무 문제 없으면 가려던 곳으로 보냄 (null 리턴)
       return null;
+    },
+
+    // ...
+
+    // [New] 에러 빌더 수정
+    errorBuilder: (context, state) {
+      // state.uri : 사용자가 접속하려던 주소
+      // state.error : 발생한 에러 객체
+      return NotFoundScreen(
+        uri: state.uri.toString(),
+        error: state.error,
+      );
     },
 
     routes: [
