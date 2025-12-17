@@ -19,6 +19,7 @@ class MainLayout extends StatelessWidget {
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: '홈'),
           NavigationDestination(icon: Icon(Icons.person), label: '상세정보'),
+          NavigationDestination(icon: Icon(Icons.list), label: '게시판'),
         ],
       ),
     );
@@ -28,6 +29,7 @@ class MainLayout extends StatelessWidget {
     final String location = GoRouterState.of(context).uri.toString();
     if (location.startsWith('/home')) return 0;
     if (location.startsWith('/detail')) return 1;
+    if (location.startsWith('/post')) return 2;
     return 0;
   }
 
@@ -38,6 +40,9 @@ class MainLayout extends StatelessWidget {
         break;
       case 1:
         context.go('/detail');
+        break;
+      case 2:
+        context.go('/post');
         break;
     }
   }

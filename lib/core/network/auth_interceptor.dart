@@ -1,18 +1,22 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 import '../../features/auth/data/repositories/auth_repository.dart';
 import '../../features/auth/presentation/providers/auth_view_model.dart';
 
 // Interceptor 클래스를 상속받아 구현합니다.
 class AuthInterceptor extends Interceptor {
   final Ref ref;
+  final Logger _logger;
 
-  AuthInterceptor(this.ref);
+  AuthInterceptor(this.ref, this._logger);
 
   // 1. 요청(Request)을 가로채서 토큰 심기
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    print('🛫 [Request] ${options.method} ${options.uri}');
+    _logger.d('🛫 [Request] ${options.method} ${options.uri}');
 
     // (1) 토큰이 필요 없는 요청인지 확인 (로그인 API 등)
     if (options.headers['accessToken'] == 'false') {
@@ -31,7 +35,7 @@ class AuthInterceptor extends Interceptor {
       options.headers.addAll({
         'Authorization': 'Bearer $token',
       });
-      print('🔑 토큰 주입 완료');
+      _logger.d('🔑 토큰 주입 완료');
     }
 
 
@@ -54,18 +58,18 @@ class AuthInterceptor extends Interceptor {
   // 2. 응답(Response)을 가로채기 (로그 등)
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print('🛬 [Response] ${response.statusCode} ${response.requestOptions.uri}');
+    _logger.d('🛬 [Response] ${response.statusCode} ${response.requestOptions.uri}');
     return handler.next(response);
   }
 
   // 3. 에러(Error)를 가로채서 401 처리
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    print('🚨 [Error] ${err.response?.statusCode} : ${err.requestOptions.uri}');
+    _logger.d('🚨 [Error] ${err.response?.statusCode} : ${err.requestOptions.uri}');
 
     // (1) 401 Unauthorized 에러가 떴을 때 (토큰 만료 등)
     if (err.response?.statusCode == 401) {
-      print('👋 토큰이 만료되었습니다. 강제 로그아웃 진행.');
+      _logger.d('👋 토큰이 만료되었습니다. 강제 로그아웃 진행.');
 
       // (2) 뷰모델을 통해 로그아웃 실행 -> 라우터가 감지하고 로그인 화면으로 보냄
       // *주의: 여기서 await를 하면 데드락이 걸릴 수 있으므로 실행만 시킵니다.

@@ -7,6 +7,7 @@ import '../../features/auth/presentation/views/login_screen.dart';
 import '../../features/auth/presentation/views/splash_screen.dart';
 import '../../features/home/presentation/views/home_screen.dart';
 import '../../features/home/presentation/views/detail_screen.dart';
+import '../../features/home/presentation/views/post_list_screen.dart';
 import '../layout/main_layout.dart';
 
 part 'router_provider.g.dart';
@@ -62,20 +63,43 @@ GoRouter router(RouterRef ref) {
 
     routes: [
       // 1. 스플래시 화면
-      GoRoute( path: '/splash', builder: (context, state) => const SplashScreen()),
-      GoRoute( path: '/login', name: 'login', builder: (context, state) => const LoginScreen()),
+      GoRoute(
+        path: '/splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginScreen(),
+      ),
 
       // [핵심 구조]
       // ShellRoute(껍데기) 안에 routes(내용물들)를 넣습니다.
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         // 껍데기 위젯 빌드
-        builder: (context, state, child) { return MainLayout(child: child);},
+        builder: (context, state, child) {
+          return MainLayout(child: child);
+        },
 
         // 이 안에 있는 화면들은 전부 하단 바를 가집니다.
         routes: [
-          GoRoute( path: '/home', name: 'home', builder: (context, state) => const HomeScreen()),
-          GoRoute( path: '/detail', name: 'detail', builder: (context, state) => const DetailScreen()),
+          GoRoute(
+            path: '/home',
+            name: 'home',
+            builder: (context, state) => const HomeScreen(),
+          ),
+          GoRoute(
+            path: '/detail',
+            name: 'detail',
+            builder: (context, state) => const DetailScreen(),
+          ),
+          // [New] 탭 2: 게시판 (여기에 추가!)
+          GoRoute(
+            path: '/posts',
+            name: 'posts',
+            builder: (context, state) => const PostListScreen(),
+          ),
         ],
       ),
     ],

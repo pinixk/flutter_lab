@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_lab/core/network/auth_interceptor.dart';
+import 'package:flutter_lab/core/utils/logger_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'dio_provider.g.dart';
@@ -17,7 +18,7 @@ Dio dio(DioRef ref) {
   dio.options.baseUrl = 'https://jsonplaceholder.typicode.com';
 
   // ref를 넘겨줘서 인터셉터 안에서 다른 Provider를 부를 수 있게 합니다.
-  dio.interceptors.add(AuthInterceptor(ref));
+  dio.interceptors.add(AuthInterceptor(ref, logger(ref)));
 
   // (팁) 개발 모드일 때만 로그를 예쁘게 찍어주는 패키지가 있다면 추가해도 좋습니다.
   // dio.interceptors.add(LogInterceptor());
