@@ -1,26 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'home_view_model.dart';
+part of 'image_repository_impl.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeViewModelHash() => r'39de2aa453ff7d3d621fbb05d981e9b38f1d78c5';
+String _$imageRepositoryHash() => r'80c915eebf6c4aa575f787b51fc13b95f3598b24';
 
-/// See also [HomeViewModel].
-@ProviderFor(HomeViewModel)
-final homeViewModelProvider =
-    AutoDisposeAsyncNotifierProvider<HomeViewModel, HomeState>.internal(
-  HomeViewModel.new,
-  name: r'homeViewModelProvider',
+/// See also [imageRepository].
+@ProviderFor(imageRepository)
+final imageRepositoryProvider = AutoDisposeProvider<ImageRepository>.internal(
+  imageRepository,
+  name: r'imageRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$homeViewModelHash,
+      : _$imageRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$HomeViewModel = AutoDisposeAsyncNotifier<HomeState>;
+typedef ImageRepositoryRef = AutoDisposeProviderRef<ImageRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

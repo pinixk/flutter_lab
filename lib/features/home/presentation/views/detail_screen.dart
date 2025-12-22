@@ -15,7 +15,21 @@ class DetailScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('마이 페이지'),
         actions: [
-          // [추가] 로그아웃 버튼
+          // 저장 버튼 (이미지가 있을 때만 보임)
+          asyncState.maybeWhen(
+            data: (state) => state.profileImage != null
+                ? IconButton(
+                    icon: const Icon(Icons.save),
+                    onPressed: () {
+                      // 업로드 요청
+                      ref.read(homeViewModelProvider.notifier).uploadImage();
+                    },
+                  )
+                : const SizedBox.shrink(), // 이미지 없으면 버튼 숨김
+            orElse: () => const SizedBox.shrink(),
+          ),
+
+          // 로그아웃 버튼
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
@@ -32,8 +46,47 @@ class DetailScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.person, size: 100, color: Colors.blue),
-              const SizedBox(height: 20),
+              Stack(
+                children: [
+                  // 1. 동그란 이미지
+                  CircleAvatar(
+                    radius: 60, // 크기 60
+                    backgroundColor: Colors.grey[300],
+                    // 이미지가 있으면 FileImage(로컬), 없으면 아이콘
+                    backgroundImage: state.profileImage != null
+                        ? FileImage(state.profileImage!)
+                        : null,
+                    child: state.profileImage == null
+                        ? const Icon(Icons.person, size: 60, color: Colors.grey)
+                        : null,
+                  ),
+
+                  // 2. 카메라 버튼 (오른쪽 아래)
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: InkWell(
+                      onTap: () {
+                        // 갤러리 열기 요청
+                        ref.read(homeViewModelProvider.notifier).pickImage();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
               Text(
                 '이름: ${state.user.name}',
                 style: const TextStyle(fontSize: 24),

@@ -17,7 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$HomeState {
   String get message => throw _privateConstructorUsedError; // 메시지 상태 (기본값 설정)
-  UserModel get user => throw _privateConstructorUsedError;
+  UserModel get user => throw _privateConstructorUsedError; // 유저 상태
+  File? get profileImage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({String message, UserModel user});
+  $Res call({String message, UserModel user, File? profileImage});
 
   $UserModelCopyWith<$Res> get user;
 }
@@ -49,6 +50,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   $Res call({
     Object? message = null,
     Object? user = null,
+    Object? profileImage = freezed,
   }) {
     return _then(_value.copyWith(
       message: null == message
@@ -59,6 +61,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as UserModel,
+      profileImage: freezed == profileImage
+          ? _value.profileImage
+          : profileImage // ignore: cast_nullable_to_non_nullable
+              as File?,
     ) as $Val);
   }
 
@@ -79,7 +85,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String message, UserModel user});
+  $Res call({String message, UserModel user, File? profileImage});
 
   @override
   $UserModelCopyWith<$Res> get user;
@@ -98,6 +104,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
     Object? user = null,
+    Object? profileImage = freezed,
   }) {
     return _then(_$HomeStateImpl(
       message: null == message
@@ -108,6 +115,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as UserModel,
+      profileImage: freezed == profileImage
+          ? _value.profileImage
+          : profileImage // ignore: cast_nullable_to_non_nullable
+              as File?,
     ));
   }
 }
@@ -117,7 +128,8 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 class _$HomeStateImpl implements _HomeState {
   const _$HomeStateImpl(
       {this.message = '데이터 불러오는 중...',
-      this.user = const UserModel(name: '김코딩', age: 25)});
+      this.user = const UserModel(name: '김코딩', age: 25),
+      this.profileImage});
 
   @override
   @JsonKey()
@@ -126,10 +138,13 @@ class _$HomeStateImpl implements _HomeState {
   @override
   @JsonKey()
   final UserModel user;
+// 유저 상태
+  @override
+  final File? profileImage;
 
   @override
   String toString() {
-    return 'HomeState(message: $message, user: $user)';
+    return 'HomeState(message: $message, user: $user, profileImage: $profileImage)';
   }
 
   @override
@@ -138,11 +153,13 @@ class _$HomeStateImpl implements _HomeState {
         (other.runtimeType == runtimeType &&
             other is _$HomeStateImpl &&
             (identical(other.message, message) || other.message == message) &&
-            (identical(other.user, user) || other.user == user));
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.profileImage, profileImage) ||
+                other.profileImage == profileImage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message, user);
+  int get hashCode => Object.hash(runtimeType, message, user, profileImage);
 
   @JsonKey(ignore: true)
   @override
@@ -152,13 +169,17 @@ class _$HomeStateImpl implements _HomeState {
 }
 
 abstract class _HomeState implements HomeState {
-  const factory _HomeState({final String message, final UserModel user}) =
-      _$HomeStateImpl;
+  const factory _HomeState(
+      {final String message,
+      final UserModel user,
+      final File? profileImage}) = _$HomeStateImpl;
 
   @override
   String get message;
   @override // 메시지 상태 (기본값 설정)
   UserModel get user;
+  @override // 유저 상태
+  File? get profileImage;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>
