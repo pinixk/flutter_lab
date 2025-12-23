@@ -45,6 +45,7 @@ dev_dependencies:
   # freezed 등을 쓰신다면 아래 버전 추천
   freezed: 2.5.2
   json_serializable: 6.8.0
+  mocktail: ^1.0.4
 
 flutter:
 
