@@ -52,6 +52,12 @@ class HomeRepositoryImpl implements HomeRepository {
     try {
       _logger.d('이미지 업로드 시작: ${imageFile.path}');
 
+      await Future.delayed(const Duration(seconds: 2));
+
+      // [테스트용] 에러 발생시키기!
+      throw Exception('이미지 용량이 너무 큽니다!');
+
+
       // 1. 파일 이름 추출 (예: image.jpg)
       String fileName = imageFile.path.split('/').last;
 

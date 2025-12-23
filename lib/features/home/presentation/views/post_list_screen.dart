@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/utils/ui_utils.dart';
+import '../../data/models/post_model.dart';
 import '../providers/post_view_model.dart';
 
 class PostListScreen extends ConsumerWidget {
@@ -7,6 +9,15 @@ class PostListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    // [New] 에러 감지 리스너 추가
+    ref.listen<AsyncValue<List<PostModel>>>(postViewModelProvider, (previous, next) {
+      // 로딩 중이 아니고 에러가 있다면
+      if (!next.isLoading && next.hasError) {
+        context.showErrorSnackBar('데이터를 불러오지 못했습니다: ${next.error}');
+      }
+    });
+
     final asyncPosts = ref.watch(postViewModelProvider);
 
     return Scaffold(

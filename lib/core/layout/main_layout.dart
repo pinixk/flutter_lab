@@ -29,7 +29,7 @@ class MainLayout extends StatelessWidget {
     final String location = GoRouterState.of(context).uri.toString();
     if (location.startsWith('/home')) return 0;
     if (location.startsWith('/detail')) return 1;
-    if (location.startsWith('/post')) return 2;
+    if (location.startsWith('/posts')) return 2;
     return 0;
   }
 
@@ -42,7 +42,7 @@ class MainLayout extends StatelessWidget {
         context.go('/detail');
         break;
       case 2:
-        context.go('/post');
+        context.go('/posts');
         break;
     }
   }

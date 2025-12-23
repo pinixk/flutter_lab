@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/utils/ui_utils.dart';
 import '../../../auth/presentation/providers/auth_view_model.dart';
 import '../providers/home_view_model.dart';
 
@@ -8,7 +9,27 @@ class DetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // 1. ViewModel 구독 (AsyncValue)
+
+    ref.listen<AsyncValue<HomeState>>(homeViewModelProvider, (previous, next) {
+
+      // (1) 에러가 발생했을 때 -> 빨간 스낵바
+      if (next.hasError && !next.isLoading) {
+        context.showErrorSnackBar('에러 발생: ${next.error}');
+      }
+
+      // (2) 로딩이 끝났고, 데이터가 있으며, 특정 메시지가 변경되었을 때 -> 성공 스낵바
+      // (여기서는 ViewModel에서 성공 시 message를 '완료!'로 바꿨다고 가정)
+      if (next.hasValue && !next.isLoading) {
+        final currentMsg = next.value!.message;
+        // 이전 메시지와 다를 때만 띄운다 (중복 방지)
+        final prevMsg = previous?.value?.message;
+
+        if (currentMsg != prevMsg && currentMsg.contains('완료')) {
+          context.showSuccessSnackBar(currentMsg);
+        }
+      }
+    });
+
     final asyncState = ref.watch(homeViewModelProvider);
 
     return Scaffold(
