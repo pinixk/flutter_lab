@@ -41,4 +41,4 @@ jobs:
         with:
           name: app-release-macos
           # macOS 빌드 결과물은 이 경로에 있습니다.
-          path: build/macos/Build/Products/Release/Flutter Lab.app
+          path: build/macos/Build/Products/Release/Flutter_Lab.app
