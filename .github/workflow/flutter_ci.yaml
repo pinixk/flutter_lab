@@ -1,0 +1,60 @@
+name: Flutter CI/CD
+
+# 1. 언제 실행할지 정합니다. (main 브랜치에 push되거나 pull_request가 올 때)
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# 2. 할 일 목록 (Jobs)
+jobs:
+  build:
+    # 우분투(리눅스) 환경에서 실행합니다.
+    runs-on: ubuntu-latest
+
+    steps:
+      # (1) 내 코드를 내려받습니다.
+      - uses: actions/checkout@v4
+
+      # (2) 자바를 설치합니다. (안드로이드 빌드용)
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      # (3) 플러터를 설치합니다.
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          # fvm을 쓰고 계시지만, CI에서는 그냥 최신 stable 버전을 쓰는 게 편합니다.
+          # 특정 버전을 원하면 flutter-version: '3.19.0' 처럼 명시 가능합니다.
+
+      # (4) 패키지 설치
+      - name: Install dependencies
+        run: flutter pub get
+
+      # (5) [중요] 코드 생성기 실행 (Freezed, Riverpod)
+      # generated 파일들은 보통 git에 안 올리므로, CI가 직접 만들어야 합니다.
+      - name: Run build_runner
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      # (6) 테스트 실행 (Unit Test + Widget Test)
+      # 우리가 만든 widget_test.dart가 여기서 돌아갑니다.
+      - name: Run tests
+        run: flutter test
+
+      # (7) APK 빌드 (Flavor 적용)
+      # --dart-define으로 Prod 환경 설정을 주입해서 빌드합니다.
+      # release 모드로 빌드하지만, 서명 키(Keystore)가 없으므로 디버그 서명으로 빌드되거나
+      # 서명 단계에서 실패할 수 있습니다. 일단은 빌드 자체 성공 여부를 확인합니다.
+      - name: Build APK
+        run: flutter build apk --release --dart-define=FLAVOR=prod --no-codesign
+
+      # (8) 결과물(APK) 업로드
+      # 빌드가 끝나면 깃허브 웹사이트에서 다운로드할 수 있게 올려줍니다.
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
